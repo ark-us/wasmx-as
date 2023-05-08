@@ -13,7 +13,8 @@
   "author": "",
   "license": "GPL-3.0-or-later",
   "devDependencies": {
-    "assemblyscript": "^0.27.5"
+    "assemblyscript": "^0.27.5",
+    "visitor-as": "^0.11.4"
   },
   "type": "module",
   "exports": {
@@ -21,5 +22,8 @@
       "import": "./build/release.js",
       "types": "./build/release.d.ts"
     }
+  },
+  "dependencies": {
+    "json-as": "^0.5.36"
   }
 }
