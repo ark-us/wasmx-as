@@ -1,5 +1,5 @@
 import { JSON } from "json-as/assembly";
-import { storageStore, storageLoad, getCallData, finish, revert } from "./wasmx"
+import { storageStore, storageLoad, getCallData, finish, revert, log } from "./wasmx"
 
 @serializable
 class SetParams {
@@ -16,6 +16,12 @@ class GetParams {
 class Calldata {
   method!: string;
   params!: string;
+}
+
+@serializable
+class Log {
+	data!:   u8[]
+	topics!: Array<u8[]>
 }
 
 export function wasmx_env_1(): void {}
@@ -43,10 +49,23 @@ function set(args: SetParams): void {
   const keyEncoded = String.UTF8.encode(args.key);
   const valueEncoded = String.UTF8.encode(args.value);
   storageStore(keyEncoded, valueEncoded);
+
+  const index1 = ab2arr<u8>(keyEncoded.slice(0, 32))
+  const ourLog = new Log()
+  ourLog.topics = new Array<u8[]>(0);
+  ourLog.topics.push(index1);
+  ourLog.data = new Array<u8>(0);
+  log(String.UTF8.encode(JSON.stringify<Log>(ourLog)));
 }
 
 function get(args: GetParams): ArrayBuffer {
   const keyEncoded = String.UTF8.encode(args.key);
   const value = storageLoad(keyEncoded);
   return value;
+}
+
+function ab2arr<T>(ab: ArrayBuffer): Array<T> {
+  let res = new Array<T>(ab.byteLength >> alignof<T>());
+  memory.copy(res.dataStart, changetype<usize>(ab), ab.byteLength);
+  return res;
 }
