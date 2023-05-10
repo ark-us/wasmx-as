@@ -3,8 +3,8 @@ import { JSON } from "json-as/assembly";
 // @ts-ignore
 @serializable
 export class Calldata {
-  method!: string;
-  params!: string;
+  set!: SetParams | null;
+  get!: GetParams | null;
 }
 
 // @ts-ignore
@@ -12,4 +12,18 @@ export class Calldata {
 export class Log {
 	data!: u8[]
 	topics!: Array<u8[]>
+}
+
+
+// @ts-ignore
+@serializable
+export class SetParams {
+  key!: string;
+  value!: string;
+}
+
+// @ts-ignore
+@serializable
+export class GetParams {
+  key!: string;
 }
