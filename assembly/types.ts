@@ -1,4 +1,5 @@
 import { JSON } from "json-as/assembly";
+import {Uint256} from './common_types';
 
 // @ts-ignore
 @serializable
@@ -19,11 +20,23 @@ export class Log {
 @serializable
 export class SetParams {
   key!: string;
-  value!: string;
+  value!: Uint256;
 }
 
 // @ts-ignore
 @serializable
 export class GetParams {
   key!: string;
+}
+
+// @ts-ignore
+@serializable
+export class DeepParams {
+  params!: SetParams;
+}
+
+// @ts-ignore
+@serializable
+export class DeepParamsReturn {
+  value!: string;
 }

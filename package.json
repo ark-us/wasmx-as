@@ -24,6 +24,7 @@
     }
   },
   "dependencies": {
-    "json-as": "^0.5.36"
+    "json-as": "^0.5.36",
+    "wasmx-schema-as": "^0.0.1"
   }
 }

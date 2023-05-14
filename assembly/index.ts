@@ -1,6 +1,6 @@
 import { JSON } from "json-as/assembly";
 import { getCallData, storageStore, storageLoad, finish, revert, log } from "./wasmx"
-import { Calldata, Log, SetParams, GetParams } from './types'
+import { Calldata, Log, SetParams, GetParams, DeepParams, DeepParamsReturn } from './types'
 
 export function wasmx_env_1(): void {}
 
@@ -20,6 +20,8 @@ export function main(): void {
   }
 }
 
+// @ts-ignore
+@wasmx_schema_execute
 export function set(args: SetParams): void {
   const keyEncoded = String.UTF8.encode(args.key);
   const valueEncoded = String.UTF8.encode(args.value);
@@ -33,10 +35,20 @@ export function set(args: SetParams): void {
   log(String.UTF8.encode(JSON.stringify<Log>(ourLog)));
 }
 
+// @ts-ignore
+@wasmx_schema_query("view")
 export function get(args: GetParams): ArrayBuffer {
   const keyEncoded = String.UTF8.encode(args.key);
   const value = storageLoad(keyEncoded);
   return value;
+}
+
+// @ts-ignore
+@wasmx_schema_execute("payable")
+export function set2(args: DeepParams): DeepParamsReturn {
+  const result = new DeepParamsReturn();
+  result.value = "value";
+  return result;
 }
 
 function ab2arr<T>(ab: ArrayBuffer): Array<T> {
